@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Odbc;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Windows;
 using CameraProjection.Math;
 using MathNet.Spatial.Euclidean;
+using MathNet.Spatial.Units;
 
 
 namespace CameraProjection
@@ -169,8 +168,10 @@ namespace CameraProjection
 
             public double Radians
             {
-                get { return System.Math.Atan2(Vector.Y, Vector.X) + System.Math.PI; }
+                get { return Angle.FromRadians(System.Math.Atan2(Vector.Y, Vector.X) + OffsetRadians).Radians; }
             }
+
+            public double OffsetRadians { get; set; }
         }
 
         private void AddProjectionsAtBoundary(ICollection<Line3D> projections, Point3D camera, Point3D p1, Point3D p2)
@@ -189,7 +190,8 @@ namespace CameraProjection
                 analysis.Add(a2);
 
                 // Swap order so that the smallest angle is first
-                if (a1.Radians > a2.Radians)
+                if (a1.Radians > a2.Radians && 
+                    a1.Radians - a2.Radians < System.Math.PI)
                 {
                     var temp = a2;
                     a2 = a1;
@@ -210,7 +212,7 @@ namespace CameraProjection
             }
 
             var ordered = analysis
-                .OrderBy(x => x.Radians)
+                .OrderBy(x => Angle.FromRadians(x.Radians - a1.Radians).Radians)
                 .Where(x => x.Radians >= a1.Radians && x.Radians <= a2.Radians)
                 .ToArray();
 

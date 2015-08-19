@@ -2,6 +2,7 @@
 using MathNet.Numerics.LinearAlgebra;
 using MathNet.Spatial.Euclidean;
 using MathNet.Spatial.Units;
+using Quaternion = System.Windows.Media.Media3D.Quaternion;
 
 
 namespace CameraProjection
@@ -10,9 +11,18 @@ namespace CameraProjection
     {
         public Camera()
         {
+            Reset();
+        }
+
+        public void Reset()
+        {
             FieldOfView = 60;
             AspectRatio = 1.333333f;
             Position = new Point3D(0, 0, 1.5);
+
+            Yaw = 0;
+            Pitch = 0;
+            Roll = 0;
         }
 
         public float Yaw { get; set; }

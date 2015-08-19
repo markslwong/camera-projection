@@ -23,6 +23,7 @@ namespace CameraProjection
             CameraProperties.DataContext = _viewModel;
 
             ButtonAdd.Click += OnButtonAddClick;
+            ButtonReset.Click += OnButtonResetClick;
 
             _viewModel.PropertyChanged += OnPropertyChanged;
 
@@ -65,6 +66,11 @@ namespace CameraProjection
         private void OnButtonAddClick(object sender, EventArgs args)
         {
             _viewModel.AddCamera();
+        }
+
+        private void OnButtonResetClick(object sender, EventArgs args)
+        {
+            _viewModel.ResetSelectedCamera();
         }
     }
 }

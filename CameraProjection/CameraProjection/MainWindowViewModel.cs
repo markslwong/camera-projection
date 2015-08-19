@@ -22,8 +22,19 @@ namespace CameraProjection
         {
             var camera = new Camera();
             _cameras.Add(camera);
-            SelectedCamera = camera;
 
+            SelectedCamera = camera;
+            SendSelectedCameraChanged();
+        }
+
+        public void ResetSelectedCamera()
+        {
+            SelectedCamera.Reset();
+            SendSelectedCameraChanged();
+        }
+
+        private void SendSelectedCameraChanged()
+        {
             SendPropertyChanged(PropertySelectedCamera);
             SendPropertyChanged(PropertySelectedCameraYaw);
             SendPropertyChanged(PropertySelectedCameraPitch);
