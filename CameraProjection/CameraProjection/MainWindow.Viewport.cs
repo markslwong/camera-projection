@@ -4,6 +4,7 @@ using MathNet.Spatial.Units;
 
 using Point3D = MathNet.Spatial.Euclidean.Point3D;
 using WindowsPoint3D = System.Windows.Media.Media3D.Point3D;
+using WindowsVector3D = System.Windows.Media.Media3D.Vector3D;
 
 namespace CameraProjection
 {
@@ -12,9 +13,14 @@ namespace CameraProjection
         private const double RenderLineSize = 0.1;
         private const double CameraTriangleSize = 1;
 
-        private static GeometryModel3D CreateTriangle(Point3D position, double size, Brush brush)
+        private static GeometryModel3D CreateCamera(Camera camera,  double size, Brush brush)
         {
             var mesh = new MeshGeometry3D();
+
+            var position = camera.Position;
+            var direction = camera.Direction;
+
+            var angle = System.Math.Atan2(direction.Y, direction.X);
 
             const double equalaterialTriangleInternalAngle = 22.5; // 45 degrees in half
 
@@ -22,15 +28,18 @@ namespace CameraProjection
 
             var multiplier = size / (1 + ratio);
 
-            mesh.Positions.Add(new WindowsPoint3D(position.X, position.Y + multiplier, position.Z));
-            mesh.Positions.Add(new WindowsPoint3D(position.X - size * 0.5, position.Y - multiplier * ratio, position.Z));
-            mesh.Positions.Add(new WindowsPoint3D(position.X + size * 0.5, position.Y - multiplier * ratio, position.Z));
+            mesh.Positions.Add(new WindowsPoint3D(position.X - multiplier, position.Y, position.Z));
+            mesh.Positions.Add(new WindowsPoint3D(position.X + multiplier * ratio, position.Y - size * 0.5, position.Z));
+            mesh.Positions.Add(new WindowsPoint3D(position.X + multiplier * ratio, position.Y + size * 0.5, position.Z));
 
             mesh.TriangleIndices.Add(0);
             mesh.TriangleIndices.Add(1);
             mesh.TriangleIndices.Add(2);
 
-            return new GeometryModel3D(mesh, new DiffuseMaterial(brush));
+            return new GeometryModel3D(mesh, new DiffuseMaterial(brush))
+            {
+                Transform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), angle / System.Math.PI * 180))
+            };
         }
 
         private static GeometryModel3D CreateLine(Point3D start, Point3D end, double lineThickness, Brush brush)
@@ -78,8 +87,8 @@ namespace CameraProjection
                     ModelGroupCameras.Children.Add(renderLine);
                 }
 
-                var renderTriangle = CreateTriangle(projection.Camera.Position, CameraTriangleSize, Brushes.CornflowerBlue);
-                ModelGroupCameras.Children.Add(renderTriangle);
+                var renderCamera = CreateCamera(projection.Camera, CameraTriangleSize, Brushes.CornflowerBlue);
+                ModelGroupCameras.Children.Add(renderCamera);
             }
         }
     }

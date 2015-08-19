@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using MathNet.Numerics.LinearAlgebra;
 using MathNet.Spatial.Euclidean;
 using MathNet.Spatial.Units;
 
@@ -21,12 +22,26 @@ namespace CameraProjection
         public float FieldOfView { get; set; }
         public float AspectRatio { get; set; }
 
+        private Matrix<double> GetRotationMatrix()
+        {
+            var coordinateSystem = CoordinateSystem.Rotation(Angle.FromDegrees(Yaw), Angle.FromDegrees(-Pitch), Angle.FromDegrees(Roll));
+            return coordinateSystem.GetRotationSubMatrix();
+        }
+
+        public Vector3D Direction
+        {
+            get
+            {
+                var direction = GetRotationMatrix() * UnitVector3D.XAxis.ToVector();
+                return new Vector3D(direction);
+            }
+        }
+
         public IList<Ray3D> ComputeProjectionRays()
         {
             var rays = new List<Ray3D>();
             
-            var coordinateSystem = CoordinateSystem.Rotation(Angle.FromDegrees(Yaw), Angle.FromDegrees(-Pitch), Angle.FromDegrees(Roll));
-            var matrix = coordinateSystem.GetRotationSubMatrix();
+            var matrix = GetRotationMatrix();
 
             // Since our camera sits in the middle of our field of view we split the FOV by half.
             var addedYaw = FieldOfView * 0.5f;
