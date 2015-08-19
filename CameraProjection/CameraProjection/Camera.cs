@@ -25,7 +25,7 @@ namespace CameraProjection
         {
             var rays = new List<Ray3D>();
             
-            var coordinateSystem = CoordinateSystem.Rotation(Angle.FromDegrees(Yaw), Angle.FromDegrees(Pitch), Angle.FromDegrees(Roll));
+            var coordinateSystem = CoordinateSystem.Rotation(Angle.FromDegrees(Yaw), Angle.FromDegrees(-Pitch), Angle.FromDegrees(Roll));
             var matrix = coordinateSystem.GetRotationSubMatrix();
 
             // Since our camera sits in the middle of our field of view we split the FOV by half.

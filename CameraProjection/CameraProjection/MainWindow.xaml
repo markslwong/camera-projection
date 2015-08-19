@@ -71,8 +71,8 @@
                     <Label Name="LabelPitch" Content="{Binding SelectedCameraPitch}" Foreground="LightGray" />
                 </StackPanel>
                 <Slider Name="SliderPitch" 
-                        Minimum="0" 
-                        Maximum="360" 
+                        Minimum="-180" 
+                        Maximum="0" 
                         Value="{Binding SelectedCameraPitch}" 
                         Margin="0,0,0,10" />
                 <StackPanel Orientation="Horizontal">
@@ -80,8 +80,8 @@
                     <Label Name="LabelRoll" Content="{Binding SelectedCameraRoll}" Foreground="LightGray" />
                 </StackPanel>
                 <Slider Name="SliderRoll" 
-                        Minimum="0" 
-                        Maximum="360" 
+                        Minimum="-180" 
+                        Maximum="180" 
                         Value="{Binding SelectedCameraRoll}" 
                         Margin="0,0,0,10" />
                 <StackPanel Orientation="Horizontal">
@@ -89,7 +89,7 @@
                     <Label Name="LabelHeight" Content="{Binding SelectedCameraHeight}" Foreground="LightGray" />
                 </StackPanel>
                 <Slider Name="SliderHeight" 
-                        Minimum="0" 
+                        Minimum="0.1" 
                         Maximum="10" 
                         Value="{Binding SelectedCameraHeight}" 
                         Margin="0,0,0,10" />
@@ -98,7 +98,7 @@
                     <Label Name="LabelFieldOfView" Content="{Binding SelectedCameraFieldOfView}" Foreground="LightGray" />
                 </StackPanel>
                 <Slider Name="SliderFieldOfView" 
-                        Minimum="0" 
+                        Minimum="20" 
                         Maximum="170" 
                         Value="{Binding SelectedCameraFieldOfView}" 
                         Margin="0,0,0,10" />
