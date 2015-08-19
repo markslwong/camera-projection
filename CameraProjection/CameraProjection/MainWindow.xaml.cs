@@ -14,7 +14,7 @@ namespace CameraProjection
     {
         private readonly MainWindowViewModel _viewModel = new MainWindowViewModel();
         
-        private const int DesiredFloorplanSize = 25; // meters
+        private const int DesiredFloorplanSize = 50; // meters
 
         public MainWindow()
         {

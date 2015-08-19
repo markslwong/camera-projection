@@ -73,7 +73,7 @@ namespace CameraProjection
                         shortestProjection = projection;
                     }
                 }
-                catch (Exception)
+                catch
                 {
                     // Exception is thrown if no intersection occurs.
                     // Normally I would strongly have this exception catch strongly typed 
@@ -81,12 +81,11 @@ namespace CameraProjection
                     // for Math.NET does not list which exception will be thrown.  It's a bit
                     // dangerous to sift through the source since you're have no gaurantee
                     // that it will work across versions, so it's best to tighten our scope.
-                    continue;
                 }
 
                 if (!shortestProjection.HasValue)
                 {
-                    continue;
+                    
                 }
 
                 foreach (var plane in _planes)

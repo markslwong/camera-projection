@@ -9,8 +9,8 @@ namespace CameraProjection
 {
     public partial class MainWindow
     {
-        private const double RenderLineSize = 0.05;
-        private const double CameraTriangleSize = 0.5;
+        private const double RenderLineSize = 0.1;
+        private const double CameraTriangleSize = 1;
 
         private static GeometryModel3D CreateTriangle(Point3D position, double size, Brush brush)
         {
