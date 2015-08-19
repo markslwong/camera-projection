@@ -1,8 +1,9 @@
 ﻿using MathNet.Spatial.Euclidean;
 
 
-namespace CameraProjection
+namespace CameraProjection.Math
 {
+    // Math.NET does not have a Line2D class
     public class Line2D
     {
         public Point2D Start { get; set; }

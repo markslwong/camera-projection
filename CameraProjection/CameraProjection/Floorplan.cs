@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows;
+using CameraProjection.Math;
 using MathNet.Spatial.Euclidean;
 
 
@@ -18,10 +20,10 @@ namespace CameraProjection
             _walls.Clear();
         }
 
-        public void SetSize(float width, float height)
+        public void SetSize(Size size)
         {
-            var halfWidth = width * 0.5;
-            var halfHeight = height * 0.5;
+            var halfWidth = size.Width * 0.5;
+            var halfHeight = size.Height * 0.5;
 
             _planes = new List<Plane>();
 

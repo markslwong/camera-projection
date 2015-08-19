@@ -5,13 +5,13 @@ using MathNet.Spatial.Units;
 
 namespace CameraProjection
 {
-    // I know this will suffer from gimbal lock.  However, it does not make sense for our 
     public class Camera : Entity
     {
         public Camera()
         {
             FieldOfView = 60;
             AspectRatio = 1.333333f;
+            Position = new Point3D(0, 0, 2.5);
         }
 
         public float Yaw { get; set; }
@@ -43,6 +43,7 @@ namespace CameraProjection
             var matrix4 = coordinateSystem4.GetRotationSubMatrix();
 
             // TODO: Don't like object creation.  Get it working for now and fix this later.
+            // TODO: I know this will suffer from gimbal lock.  However, the Quaternion libraries both my Microsoft and by Math.Net do not have Euler to Quaternion conversions.  I've done the conversion manually in the past, but running out of time.
             var vector1 = matrix * matrix1 * UnitVector3D.XAxis.ToVector();
             var vector2 = matrix * matrix2 * UnitVector3D.XAxis.ToVector();
             var vector3 = matrix * matrix3 * UnitVector3D.XAxis.ToVector();

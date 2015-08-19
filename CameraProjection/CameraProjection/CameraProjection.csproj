@@ -71,8 +71,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Camera.cs" />
-    <Compile Include="CameraRays.cs" />
-    <Compile Include="Line2D.cs" />
+    <Compile Include="Projection.cs" />
+    <Compile Include="MainWindow.Viewport.cs" />
+    <Compile Include="Converters\NullToVisibilityConverter.cs" />
+    <Compile Include="Math\Line2D.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="Floorplan.cs" />
     <Compile Include="MainWindow.xaml.cs">

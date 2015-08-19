@@ -15,3 +15,5 @@ C:\Users\Mark\Documents\GitHub\camera-projection\CameraProjection\CameraProjecti
 C:\Users\Mark\Documents\GitHub\camera-projection\CameraProjection\CameraProjection\obj\Debug\CameraProjection.csproj.GenerateResource.Cache
 C:\Users\Mark\Documents\GitHub\camera-projection\CameraProjection\CameraProjection\obj\Debug\CameraProjection.exe
 C:\Users\Mark\Documents\GitHub\camera-projection\CameraProjection\CameraProjection\obj\Debug\CameraProjection.pdb
+C:\Users\Mark\Documents\GitHub\camera-projection\CameraProjection\CameraProjection\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\Mark\Documents\GitHub\camera-projection\CameraProjection\CameraProjection\obj\Debug\CameraProjection_MarkupCompile.lref
