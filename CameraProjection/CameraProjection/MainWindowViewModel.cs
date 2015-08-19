@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Reflection;
 using System.Windows;
+using MathNet.Spatial.Euclidean;
 
 
 namespace CameraProjection
@@ -24,6 +25,10 @@ namespace CameraProjection
             SelectedCamera = camera;
 
             SendPropertyChanged(PropertySelectedCamera);
+            SendPropertyChanged(PropertySelectedCameraYaw);
+            SendPropertyChanged(PropertySelectedCameraPitch);
+            SendPropertyChanged(PropertySelectedCameraRoll);
+            SendPropertyChanged(PropertySelectedCameraHeight);
         }
 
         public Camera SelectedCamera { get; private set; }
@@ -33,7 +38,7 @@ namespace CameraProjection
             get { return SelectedCamera == null ? 0 : SelectedCamera.Yaw; }
             set
             {
-                SendPropertyChanged(PropertySelectedCamera);
+                SendPropertyChanged(PropertySelectedCameraYaw);
                 SelectedCamera.Yaw = value;
             }
         }
@@ -43,7 +48,7 @@ namespace CameraProjection
             get { return SelectedCamera == null ? 0 : SelectedCamera.Pitch; }
             set
             {
-                SendPropertyChanged(PropertySelectedCamera);
+                SendPropertyChanged(PropertySelectedCameraPitch);
                 SelectedCamera.Pitch = value;
             }
         }
@@ -53,8 +58,19 @@ namespace CameraProjection
             get { return SelectedCamera == null ? 0 : SelectedCamera.Roll; }
             set
             {
-                SendPropertyChanged(PropertySelectedCamera);
+                SendPropertyChanged(PropertySelectedCameraRoll);
                 SelectedCamera.Roll = value;
+            }
+        }
+
+        public double SelectedCameraHeight
+        {
+            get { return SelectedCamera == null ? 0 : SelectedCamera.Position.Z; }
+            set
+            {
+                SendPropertyChanged(PropertySelectedCameraHeight);
+                var position = SelectedCamera.Position;
+                SelectedCamera.Position = new Point3D(position.X, position.Y, value);
             }
         }
 
@@ -93,5 +109,9 @@ namespace CameraProjection
         public event PropertyChangedEventHandler PropertyChanged;
 
         private const string PropertySelectedCamera = "SelectedCamera";
+        private const string PropertySelectedCameraYaw = "SelectedCameraYaw";
+        private const string PropertySelectedCameraPitch = "SelectedCameraPitch";
+        private const string PropertySelectedCameraRoll = "SelectedCameraRoll";
+        private const string PropertySelectedCameraHeight = "SelectedCameraHeight";
     }
 }
