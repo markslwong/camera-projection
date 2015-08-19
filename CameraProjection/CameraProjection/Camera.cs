@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Double;
 using MathNet.Spatial.Euclidean;
 using MathNet.Spatial.Units;
 using Quaternion = System.Windows.Media.Media3D.Quaternion;
@@ -34,8 +35,10 @@ namespace CameraProjection
 
         private Matrix<double> GetRotationMatrix()
         {
-            var coordinateSystem = CoordinateSystem.Rotation(Angle.FromDegrees(Yaw), Angle.FromDegrees(-Pitch), Angle.FromDegrees(Roll));
-            return coordinateSystem.GetRotationSubMatrix();
+            var m1 = Matrix3D.RotationAroundZAxis(Angle.FromDegrees(Yaw));
+            var m2 = Matrix3D.RotationAroundYAxis(Angle.FromDegrees(-Pitch));
+            var m3 = Matrix3D.RotationAroundXAxis(Angle.FromDegrees(Roll));
+            return m1 * m2 * m3;
         }
 
         public Vector3D Direction
@@ -50,7 +53,7 @@ namespace CameraProjection
         public IList<Ray3D> ComputeProjectionRays()
         {
             var rays = new List<Ray3D>();
-            
+
             var matrix = GetRotationMatrix();
 
             // Since our camera sits in the middle of our field of view we split the FOV by half.
