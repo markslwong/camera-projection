@@ -29,6 +29,8 @@ namespace CameraProjection
             SendPropertyChanged(PropertySelectedCameraPitch);
             SendPropertyChanged(PropertySelectedCameraRoll);
             SendPropertyChanged(PropertySelectedCameraHeight);
+            SendPropertyChanged(PropertySelectedCameraFieldOfView);
+            SendPropertyChanged(PropertySelectedCameraAspectRatio);
         }
 
         public Camera SelectedCamera { get; private set; }
@@ -74,6 +76,26 @@ namespace CameraProjection
             }
         }
 
+        public float SelectedCameraFieldOfView
+        {
+            get { return SelectedCamera == null ? 0 : SelectedCamera.FieldOfView; }
+            set
+            {
+                SendPropertyChanged(PropertySelectedCameraFieldOfView);
+                SelectedCamera.FieldOfView = value;
+            }
+        }
+
+        public float SelectedCameraAspectRatio
+        {
+            get { return SelectedCamera == null ? 0 : SelectedCamera.AspectRatio; }
+            set
+            {
+                SendPropertyChanged(PropertySelectedCameraAspectRatio);
+                SelectedCamera.AspectRatio = value;
+            }
+        }
+
         public IEnumerable<Projection> CameraProjections
         {
             get
@@ -113,5 +135,7 @@ namespace CameraProjection
         private const string PropertySelectedCameraPitch = "SelectedCameraPitch";
         private const string PropertySelectedCameraRoll = "SelectedCameraRoll";
         private const string PropertySelectedCameraHeight = "SelectedCameraHeight";
+        private const string PropertySelectedCameraFieldOfView = "SelectedCameraFieldOfView";
+        private const string PropertySelectedCameraAspectRatio = "SelectedCameraAspectRatio";
     }
 }

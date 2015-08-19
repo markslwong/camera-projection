@@ -34,8 +34,8 @@ namespace CameraProjection
 
             var coordinateSystem1 = CoordinateSystem.Rotation(Angle.FromDegrees(+addedYaw), Angle.FromDegrees(+addedPitch), Angle.FromDegrees(0));
             var coordinateSystem2 = CoordinateSystem.Rotation(Angle.FromDegrees(-addedYaw), Angle.FromDegrees(+addedPitch), Angle.FromDegrees(0));
-            var coordinateSystem3 = CoordinateSystem.Rotation(Angle.FromDegrees(+addedYaw), Angle.FromDegrees(-addedPitch), Angle.FromDegrees(0));
-            var coordinateSystem4 = CoordinateSystem.Rotation(Angle.FromDegrees(-addedYaw), Angle.FromDegrees(-addedPitch), Angle.FromDegrees(0));
+            var coordinateSystem3 = CoordinateSystem.Rotation(Angle.FromDegrees(-addedYaw), Angle.FromDegrees(-addedPitch), Angle.FromDegrees(0));
+            var coordinateSystem4 = CoordinateSystem.Rotation(Angle.FromDegrees(+addedYaw), Angle.FromDegrees(-addedPitch), Angle.FromDegrees(0));
 
             var matrix1 = coordinateSystem1.GetRotationSubMatrix();
             var matrix2 = coordinateSystem2.GetRotationSubMatrix();

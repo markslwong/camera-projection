@@ -22,14 +22,6 @@ namespace CameraProjection
             
             CameraProperties.DataContext = _viewModel;
 
-            SliderYaw.DataContext = _viewModel;
-            SliderPitch.DataContext = _viewModel;
-            SliderRoll.DataContext = _viewModel;
-
-            LabelYaw.DataContext = _viewModel;
-            LabelPitch.DataContext = _viewModel;
-            LabelRoll.DataContext = _viewModel;
-
             ButtonAdd.Click += OnButtonAddClick;
 
             _viewModel.PropertyChanged += OnPropertyChanged;

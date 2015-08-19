@@ -48,10 +48,10 @@ namespace CameraProjection
             var lineX = System.Math.Cos(angle + halfPi) * halfThickness;
             var lineY = System.Math.Sin(angle + halfPi) * halfThickness;
 
-            mesh.Positions.Add(new WindowsPoint3D(start.X + lineX, start.Y + lineY, start.Z));
-            mesh.Positions.Add(new WindowsPoint3D(start.X - lineX, start.Y - lineY, end.Z));
-            mesh.Positions.Add(new WindowsPoint3D(end.X - lineX, end.Y - lineY, end.Z));
-            mesh.Positions.Add(new WindowsPoint3D(end.X + lineX, end.Y + lineY, end.Z));
+            mesh.Positions.Add(new WindowsPoint3D(start.X + lineX, start.Y + lineY, 0));
+            mesh.Positions.Add(new WindowsPoint3D(start.X - lineX, start.Y - lineY, 0));
+            mesh.Positions.Add(new WindowsPoint3D(end.X - lineX, end.Y - lineY, 0));
+            mesh.Positions.Add(new WindowsPoint3D(end.X + lineX, end.Y + lineY, 0));
 
             mesh.TriangleIndices.Add(0);
             mesh.TriangleIndices.Add(1);

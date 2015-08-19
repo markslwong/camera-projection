@@ -56,7 +56,7 @@
                         Orientation="Vertical"
                         Visibility="{Binding SelectedCamera, Converter={StaticResource NullToVisibilityConverter}}"
                         Margin="20">
-                <Label Content="Camera Properties" Foreground="White" Margin="0,0,0,30"></Label>
+                <Label Content="Selected Camera" Foreground="White" Margin="0,0,0,10"></Label>
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Yaw" Foreground="LightGray" />
                     <Label Name="LabelYaw" Content="{Binding SelectedCameraYaw}" Foreground="LightGray" />
@@ -92,6 +92,24 @@
                         Minimum="0" 
                         Maximum="10" 
                         Value="{Binding SelectedCameraHeight}" 
+                        Margin="0,0,0,10" />
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Field of View" Foreground="LightGray" />
+                    <Label Name="LabelFieldOfView" Content="{Binding SelectedCameraFieldOfView}" Foreground="LightGray" />
+                </StackPanel>
+                <Slider Name="SliderFieldOfView" 
+                        Minimum="0" 
+                        Maximum="170" 
+                        Value="{Binding SelectedCameraFieldOfView}" 
+                        Margin="0,0,0,10" />
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Aspect Ratio" Foreground="LightGray" />
+                    <Label Name="LabelAspectRatio" Content="{Binding SelectedCameraAspectRatio}" Foreground="LightGray" />
+                </StackPanel>
+                <Slider Name="SliderAspectRatio" 
+                        Minimum="0.5" 
+                        Maximum="2" 
+                        Value="{Binding SelectedCameraAspectRatio}" 
                         Margin="0,0,0,10" />
             </StackPanel>
         </StackPanel>

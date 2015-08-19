@@ -63,8 +63,9 @@ namespace CameraProjection
 
                 try
                 {
+                    var rayPlane = new Plane(ray.ThroughPoint, ray.Direction);
                     var projection = _planeGround.IntersectionWith(ray);
-                    var distance = projection.DistanceTo(ray.ThroughPoint);
+                    var distance = rayPlane.SignedDistanceTo(projection);
 
                     if (distance > 0)
                     {
@@ -92,8 +93,9 @@ namespace CameraProjection
                 {
                     try
                     {
+                        var rayPlane = new Plane(ray.ThroughPoint, ray.Direction);
                         var projection = plane.IntersectionWith(ray);
-                        var distance = projection.DistanceTo(ray.ThroughPoint);
+                        var distance = rayPlane.SignedDistanceTo(projection);
 
                         if (distance > 0 &&
                             shortestDistance > distance)
