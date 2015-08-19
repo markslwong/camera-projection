@@ -12,7 +12,7 @@ namespace CameraProjection
         {
             FieldOfView = 60;
             AspectRatio = 1.333333f;
-            Position = new Point3D(0, 0, 2.5);
+            Position = new Point3D(0, 0, 1.5);
         }
 
         public float Yaw { get; set; }
