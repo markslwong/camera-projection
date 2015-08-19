@@ -16,7 +16,9 @@ namespace CameraProjection
         private Plane _planeGround = new Plane(new Point3D(), UnitVector3D.ZAxis);
 
         private Size _size;
-        private IList<Plane> _planes; 
+        private IList<Plane> _planes;
+
+        public Size Size { get { return _size; } }
 
         public void Clear()
         {

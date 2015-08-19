@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Reflection;
@@ -22,6 +23,17 @@ namespace CameraProjection
         {
             var camera = new Camera();
             _cameras.Add(camera);
+
+            // TODO: Remove this when cameras are moveable
+            if (_cameras.Count > 1)
+            {
+                var random = new Random();
+                camera.Position = new Point3D(
+                    random.NextDouble() * _floorplan.Size.Width - (_floorplan.Size.Width * 0.5),
+                    random.NextDouble() * _floorplan.Size.Height - (_floorplan.Size.Height * 0.5),
+                    camera.Position.Z);
+                MessageBox.Show("Did Not Complete Move Camera Functionality.", "Did Not Finish", MessageBoxButton.OK);
+            }
 
             SelectedCamera = camera;
             SendSelectedCameraChanged();

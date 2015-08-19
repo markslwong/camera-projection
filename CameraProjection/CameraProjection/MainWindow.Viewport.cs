@@ -16,7 +16,7 @@ namespace CameraProjection
         private static GeometryModel3D CreateCamera(Camera camera,  double size, Brush brush)
         {
             var mesh = new MeshGeometry3D();
-
+            
             var position = camera.Position;
             var direction = camera.Direction;
 
@@ -28,9 +28,9 @@ namespace CameraProjection
 
             var multiplier = size / (1 + ratio);
 
-            mesh.Positions.Add(new WindowsPoint3D(position.X - multiplier, position.Y, position.Z));
-            mesh.Positions.Add(new WindowsPoint3D(position.X + multiplier * ratio, position.Y - size * 0.5, position.Z));
-            mesh.Positions.Add(new WindowsPoint3D(position.X + multiplier * ratio, position.Y + size * 0.5, position.Z));
+            mesh.Positions.Add(new WindowsPoint3D(-multiplier, 0, 0));
+            mesh.Positions.Add(new WindowsPoint3D(+multiplier * ratio, -size * 0.5, 0));
+            mesh.Positions.Add(new WindowsPoint3D(+multiplier * ratio, +size * 0.5, 0));
 
             mesh.TriangleIndices.Add(0);
             mesh.TriangleIndices.Add(1);
@@ -38,7 +38,13 @@ namespace CameraProjection
 
             return new GeometryModel3D(mesh, new DiffuseMaterial(brush))
             {
-                Transform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), angle / System.Math.PI * 180))
+                Transform = new Transform3DGroup
+                {
+                    Children = new Transform3DCollection(new Transform3D [] {
+                        new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 0, 1), angle / System.Math.PI * 180)),
+                        new TranslateTransform3D(position.X, position.Y, position.Z)
+                    })
+                }
             };
         }
 
