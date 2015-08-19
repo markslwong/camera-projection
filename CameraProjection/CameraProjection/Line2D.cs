@@ -3,7 +3,7 @@
 
 namespace CameraProjection
 {
-    public class LineSegment2D
+    public class Line2D
     {
         public Point2D Start { get; set; }
         public Point2D End { get; set; }

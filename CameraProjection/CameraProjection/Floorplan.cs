@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MathNet.Spatial.Euclidean;
 
 
@@ -6,9 +7,9 @@ namespace CameraProjection
 {
     public class Floorplan
     {
-        private readonly List<LineSegment2D> _walls = new List<LineSegment2D>();
+        private readonly List<Line2D> _walls = new List<Line2D>();
 
-        private readonly Plane _planeGround = new Plane(new Point3D(), UnitVector3D.ZAxis);
+        private Plane _planeGround = new Plane(new Point3D(), UnitVector3D.ZAxis);
 
         private IList<Plane> _planes; 
 
@@ -22,10 +23,7 @@ namespace CameraProjection
             var halfWidth = width * 0.5;
             var halfHeight = height * 0.5;
 
-            _planes = new List<Plane>
-            {
-                _planeGround
-            };
+            _planes = new List<Plane>();
 
             var top = new Plane(new Point3D(0, halfHeight, 0), UnitVector3D.YAxis);
             var bottom = new Plane(new Point3D(0, -halfHeight, 0), UnitVector3D.YAxis);
@@ -40,14 +38,14 @@ namespace CameraProjection
 
         public void AddWall(Point2D start, Point2D end)
         {
-            _walls.Add(new LineSegment2D
+            _walls.Add(new Line2D
             {
                 Start = start,
                 End = end
             });
         }
 
-        public IEnumerable<Line3D> ComputeProjectionPreview(Camera camera)
+        public IEnumerable<Line3D> ComputeFloorProjection(Camera camera)
         {
             var projections = new List<Line3D>();
 
@@ -60,7 +58,34 @@ namespace CameraProjection
 
                 var shortestDistance = double.MaxValue;
                 Point3D? shortestProjection = null;
-                
+
+                try
+                {
+                    var projection = _planeGround.IntersectionWith(ray);
+                    var distance = projection.DistanceTo(ray.ThroughPoint);
+
+                    if (distance > 0)
+                    {
+                        shortestDistance = distance;
+                        shortestProjection = projection;
+                    }
+                }
+                catch (Exception)
+                {
+                    // Exception is thrown if no intersection occurs.
+                    // Normally I would strongly have this exception catch strongly typed 
+                    // so it doesn't surpress other exceptions.  However, the documentation 
+                    // for Math.NET does not list which exception will be thrown.  It's a bit
+                    // dangerous to sift through the source since you're have no gaurantee
+                    // that it will work across versions, so it's best to tighten our scope.
+                    continue;
+                }
+
+                if (!shortestProjection.HasValue)
+                {
+                    continue;
+                }
+
                 foreach (var plane in _planes)
                 {
                     try
@@ -68,8 +93,8 @@ namespace CameraProjection
                         var projection = plane.IntersectionWith(ray);
                         var distance = projection.DistanceTo(ray.ThroughPoint);
 
-                        if (shortestDistance > distance &&
-                            distance > 0)
+                        if (distance > 0 &&
+                            shortestDistance > distance)
                         {
                             shortestDistance = distance;
                             shortestProjection = projection;
@@ -77,36 +102,24 @@ namespace CameraProjection
                     }
                     catch
                     {
-                        // Exception is thrown if no intersection occurs.
-                        // I would normally strongly type on this exception so it doesn't surpress everything.
-                        // However, the documentation does not list which exception occurs.
+                        // See comment for try-catch above.
                     }
                 }
 
-                if (shortestProjection.HasValue)
+                // Save point before calculating walls
+                corners[i] = shortestProjection;
+
+                if (i == rays.Count - 1)
                 {
-                    // Save point before calculating walls
-                    corners[i] = shortestProjection;
-
-                    if (i == rays.Count - 1)
+                    if (corners[0].HasValue)
                     {
-                        if (corners[0].HasValue)
-                        {
-                            projections.Add(new Line3D(corners[0].Value, shortestProjection.Value));
-                        }
-                    }
-
-                    if (i > 0 && corners[i - 1].HasValue)
-                    {
-                        projections.Add(new Line3D(corners[i - 1].Value, shortestProjection.Value));
+                        projections.Add(new Line3D(corners[0].Value, shortestProjection.Value));
                     }
                 }
 
-                // TODO: compute walls
-
-                if (shortestProjection.HasValue)
+                if (i > 0 && corners[i - 1].HasValue)
                 {
-                    projections.Add(new Line3D(ray.ThroughPoint, shortestProjection.Value));
+                    projections.Add(new Line3D(corners[i - 1].Value, shortestProjection.Value));
                 }
             }
 

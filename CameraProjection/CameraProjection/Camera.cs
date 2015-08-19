@@ -10,7 +10,7 @@ namespace CameraProjection
     {
         public Camera()
         {
-            FieldOfView = 100;
+            FieldOfView = 60;
             AspectRatio = 1.333333f;
         }
 
@@ -24,27 +24,34 @@ namespace CameraProjection
         public IList<Ray3D> ComputeProjectionRays()
         {
             var rays = new List<Ray3D>();
+            
+            var coordinateSystem = CoordinateSystem.Rotation(Angle.FromDegrees(Yaw), Angle.FromDegrees(Pitch), Angle.FromDegrees(Roll));
+            var matrix = coordinateSystem.GetRotationSubMatrix();
 
             // Since our camera sits in the middle of our field of view we split the FOV by half.
             var addedYaw = FieldOfView * 0.5f;
             var addedPitch = addedYaw / AspectRatio;
 
-            var roll = Angle.FromDegrees(Roll);
+            var coordinateSystem1 = CoordinateSystem.Rotation(Angle.FromDegrees(+addedYaw), Angle.FromDegrees(+addedPitch), Angle.FromDegrees(0));
+            var coordinateSystem2 = CoordinateSystem.Rotation(Angle.FromDegrees(-addedYaw), Angle.FromDegrees(+addedPitch), Angle.FromDegrees(0));
+            var coordinateSystem3 = CoordinateSystem.Rotation(Angle.FromDegrees(+addedYaw), Angle.FromDegrees(-addedPitch), Angle.FromDegrees(0));
+            var coordinateSystem4 = CoordinateSystem.Rotation(Angle.FromDegrees(-addedYaw), Angle.FromDegrees(-addedPitch), Angle.FromDegrees(0));
 
-            var coordinateSystem1 = CoordinateSystem.Rotation(Angle.FromDegrees(Yaw + addedYaw), Angle.FromDegrees(Pitch + addedPitch), roll);
-            var coordinateSystem2 = CoordinateSystem.Rotation(Angle.FromDegrees(Yaw - addedYaw), Angle.FromDegrees(Pitch + addedPitch), roll);
-            var coordinateSystem3 = CoordinateSystem.Rotation(Angle.FromDegrees(Yaw - addedYaw), Angle.FromDegrees(Pitch - addedPitch), roll);
-            var coordinateSystem4 = CoordinateSystem.Rotation(Angle.FromDegrees(Yaw + addedYaw), Angle.FromDegrees(Pitch - addedPitch), roll);
-            
-            var vector1 = coordinateSystem1.Transform(UnitVector3D.XAxis);
-            var vector2 = coordinateSystem2.Transform(UnitVector3D.XAxis); 
-            var vector3 = coordinateSystem3.Transform(UnitVector3D.XAxis); 
-            var vector4 = coordinateSystem4.Transform(UnitVector3D.XAxis);
+            var matrix1 = coordinateSystem1.GetRotationSubMatrix();
+            var matrix2 = coordinateSystem2.GetRotationSubMatrix();
+            var matrix3 = coordinateSystem3.GetRotationSubMatrix();
+            var matrix4 = coordinateSystem4.GetRotationSubMatrix();
 
-            rays.Add(new Ray3D(Position, vector1));
-            rays.Add(new Ray3D(Position, vector2));
-            rays.Add(new Ray3D(Position, vector3));
-            rays.Add(new Ray3D(Position, vector4));
+            // TODO: Don't like object creation.  Get it working for now and fix this later.
+            var vector1 = matrix * matrix1 * UnitVector3D.XAxis.ToVector();
+            var vector2 = matrix * matrix2 * UnitVector3D.XAxis.ToVector();
+            var vector3 = matrix * matrix3 * UnitVector3D.XAxis.ToVector();
+            var vector4 = matrix * matrix4 * UnitVector3D.XAxis.ToVector();
+
+            rays.Add(new Ray3D(Position, new Vector3D(vector1)));
+            rays.Add(new Ray3D(Position, new Vector3D(vector2)));
+            rays.Add(new Ray3D(Position, new Vector3D(vector3)));
+            rays.Add(new Ray3D(Position, new Vector3D(vector4)));
 
             return rays;
         }

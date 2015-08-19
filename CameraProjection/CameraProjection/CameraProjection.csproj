@@ -72,8 +72,7 @@
     </Compile>
     <Compile Include="Camera.cs" />
     <Compile Include="CameraRays.cs" />
-    <Compile Include="LineSegment2D.cs" />
-    <Compile Include="LineSegment3D.cs" />
+    <Compile Include="Line2D.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="Floorplan.cs" />
     <Compile Include="MainWindow.xaml.cs">
@@ -82,6 +81,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MainWindowViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

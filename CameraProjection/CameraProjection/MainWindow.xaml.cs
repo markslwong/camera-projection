@@ -20,17 +20,24 @@ namespace CameraProjection
         {
             InitializeComponent();
 
-            var camera = new Camera();
+            var camera = new Camera
+            {
+                Position = new Point3D(0, 0, 0.5),
+                Yaw = 0
+            };
 
             CreateFloorplan(5, 5);
 
-            var preview = _floorplan.ComputeProjectionPreview(camera);
+            var preview = _floorplan.ComputeFloorProjection(camera);
 
             foreach (var item in preview)
             {
-                var line = CreateLine(item.StartPoint, item.EndPoint, 0.01f);
+                var line = CreateLine(item.StartPoint, item.EndPoint, 0.01, Brushes.White);
                 ModelGroupCameras.Children.Add(line);
             }
+
+            var triangle = CreateTriangle(camera.Position, 0.1, Brushes.LightSkyBlue);
+            ModelGroupCameras.Children.Add(triangle);
         }
 
         private void CreateFloorplan(float width, float height)
@@ -59,7 +66,28 @@ namespace CameraProjection
             _floorplan.SetSize(floorplanWidth, floorplanHeight);
         }
 
-        private static GeometryModel3D CreateLine(Point3D start, Point3D end, double lineThickness)
+        private static GeometryModel3D CreateTriangle(Point3D position, double size, Brush brush)
+        {
+            var mesh = new MeshGeometry3D();
+
+            const double equalaterialTriangleInternalAngle = 22.5;
+
+            var ratio = Angle.FromDegrees(equalaterialTriangleInternalAngle).Radians;
+
+            var multiplier = size / (1 + ratio);
+
+            mesh.Positions.Add(new WindowsPoint3D(position.X, position.Y + multiplier, position.Z));
+            mesh.Positions.Add(new WindowsPoint3D(position.X - size * 0.5, position.Y - multiplier * ratio, position.Z));
+            mesh.Positions.Add(new WindowsPoint3D(position.X + size * 0.5, position.Y - multiplier * ratio, position.Z));
+
+            mesh.TriangleIndices.Add(0);
+            mesh.TriangleIndices.Add(1);
+            mesh.TriangleIndices.Add(2);
+
+            return new GeometryModel3D(mesh, new DiffuseMaterial(brush));
+        }
+
+        private static GeometryModel3D CreateLine(Point3D start, Point3D end, double lineThickness, Brush brush)
         {
             var mesh = new MeshGeometry3D();
 
@@ -86,7 +114,7 @@ namespace CameraProjection
             mesh.TriangleIndices.Add(3);
             mesh.TriangleIndices.Add(0);
 
-            return new GeometryModel3D(mesh, new DiffuseMaterial(Brushes.White));
+            return new GeometryModel3D(mesh, new DiffuseMaterial(brush));
         }
     }
 }
